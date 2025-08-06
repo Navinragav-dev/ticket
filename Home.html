@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Home - E-Commerce Shop</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+    }
+
+    header {
+      background: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 0;
+    }
+
+    .container {
+      padding: 20px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      width: 280px;
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.2s ease;
+      cursor: grab;
+    }
+
+    .product-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+    }
+
+    .price {
+      font-size: 18px;
+      color: #28a745;
+      margin: 10px 0;
+    }
+
+    .media-section, .location-section, .cart-section {
+      margin-top: 50px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .media-section h2, .location-section h2, .cart-section h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    audio, video {
+      display: block;
+      margin: 0 auto;
+    }
+
+    #location {
+      text-align: center;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+
+    .loc-btn {
+      display: block;
+      margin: 20px auto 10px;
+      padding: 10px 20px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .loc-btn:hover {
+      background: #1e7e34;
+    }
+
+    #map {
+      height: 400px;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+
+    .cart-items {
+      list-style: none;
+      padding: 0;
+      min-height: 50px;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      transition: background 0.3s;
+    }
+
+    .cart-items li {
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cart-items li:last-child {
+      border-bottom: none;
+    }
+
+    form{
+      margin-top: 20px;
+      background: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    /* Notification Styles */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      opacity: 1;
+      transition: opacity 0.5s;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🛍️ Super E-Commerce Store</h1>
+    <p>Welcome to the best shopping experience</p>
+  </header>
+
+  <div class="container">
+
+    <!-- 🛒 Product Cards -->
+    <section class="products">
+      <div class="product-card" data-name="Smart Watch" data-price="2000" draggable="true">
+        <img src="Smartwatch.jpg" alt="Smart Watch">
+        <h3>Smart Watch</h3>
+        <p class="price">₹2000</p>
+      </div>
+
+      <div class="product-card" data-name="Wireless Earbuds" data-price="1200" draggable="true">
+        <img src="wireless earbuds.jpg" alt="Wireless Earbuds">
+        <h3>Wireless Earbuds</h3>
+        <p class="price">₹1200</p>
+      </div>
+
+      <div class="product-card" data-name="Smartphone" data-price="19000" draggable="true">
+        <img src="Smartphone.jpg" alt="Smartphone">
+        <h3>Smartphone</h3>
+        <p class="price">₹19000</p>
+      </div>
+    </section>
+
+    <!-- 🛒 Cart Section -->
+    <section class="cart-section">
+      <h2>🛒 Shopping Cart</h2>
+      <ul class="cart-items" id="cart-items">
+        <li>Your cart is empty.</li>
+      </ul>
+      <p id="cart-total" style="text-align:right; font-weight:bold;"></p>
+    </section>
+
+    <form>
+      <center>
+        <a href="book.html">Click here to confirm your order</a>
+      </center>
+    </form>
+
+    <!-- 🎧 Audio Player -->
+    <section class="media-section">
+      <h2>🎧 Product Audio Description</h2>
+      <audio controls> 
+        <source src="product-launch-advertising-commercial-music-301409.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+      </audio>
+    </section>
+    
+    <!-- 📹 Video Demo -->
+    <section class="media-section">
+      <h2>📹 Product Video Demo</h2>
+      <video width="480" height="270" controls>
+        <source src="product video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </section>
+
+    <!-- 📍 Location Access -->
+    <section class="location-section">
+      <h2>📍 Find Your Current Location on Map</h2>
+      <button class="loc-btn" onclick="getLocation()">Get My Location</button>
+      <div id="location">Location will appear here.</div>
+      <div id="map"></div>
+    </section>
+
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <script>
+    // ================= Drag & Drop Cart =================
+    const cartItemsEl = document.getElementById("cart-items");
+    let cart = [];
+
+    // Drag start
+    document.querySelectorAll(".product-card").forEach(card => {
+      card.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("text/plain", JSON.stringify({
+          name: card.dataset.name,
+          price: parseFloat(card.dataset.price)
+        }));
+        card.style.opacity = "0.5";
+      });
+
+      card.addEventListener("dragend", e => {
+        card.style.opacity = "1";
+      });
+    });
+
+    // Allow drop on cart
+    cartItemsEl.addEventListener("dragover", e => {
+      e.preventDefault();
+      cartItemsEl.style.background = "#f0f0f0";
+    });
+
+    cartItemsEl.addEventListener("dragleave", e => {
+      cartItemsEl.style.background = "";
+    });
+
+    // Drop event
+    cartItemsEl.addEventListener("drop", e => {
+      e.preventDefault();
+      cartItemsEl.style.background = "";
+
+      const data = JSON.parse(e.dataTransfer.getData("text/plain"));
+      cart.push(data);
+      updateCart();
+
+      showNotification(`✅ "${data.name}" added to cart!`);
+    });
+
+    // Update cart display
+    function updateCart() {
+      cartItemsEl.innerHTML = "";
+      let total = 0;
+
+      if(cart.length === 0) {
+        cartItemsEl.innerHTML = "<li>Your cart is empty.</li>";
+      } else {
+        cart.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = `${item.name} - ₹${item.price}`;
+          cartItemsEl.appendChild(li);
+          total += item.price;
+        });
+      }
+
+      const cartTotalEl = document.getElementById("cart-total");
+      cartTotalEl.textContent = `Total: ₹${total}`;
+    }
+
+    // Notification
+    function showNotification(message) {
+      const notif = document.createElement("div");
+      notif.className = "notification";
+      notif.textContent = message;
+      document.body.appendChild(notif);
+
+      setTimeout(() => {
+        notif.style.opacity = "0";
+        setTimeout(() => document.body.removeChild(notif), 500);
+      }, 2000);
+    }
+
+    // ================= Geolocation =================
+    let map, marker;
+
+    function getLocation() {
+      const output = document.getElementById("location");
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        output.innerHTML = "Geolocation is not supported by this browser.";
+      }
+    }
+
+    function showPosition(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+      const output = document.getElementById("location");
+
+      output.innerHTML = `Latitude: ${lat}<br>Longitude: ${lon}<br>
+        <a href="https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=18/${lat}/${lon}" target="_blank">
+          📍 View on OpenStreetMap
+        </a>`;
+
+      if (!map) {
+        map = L.map('map').setView([lat, lon], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        marker = L.marker([lat, lon]).addTo(map)
+          .bindPopup("You are here!").openPopup();
+
+        const collegeLat = 9.672813;
+        const collegeLon = 77.9658022;
+        L.marker([collegeLat, collegeLon]).addTo(map)
+          .bindPopup(`<b>Kamaraj College of Engineering & Technology</b><br>
+            <a href="https://www.google.com/maps/place/Kamaraj+College+of+Engineering+%26+Technology/(Autonomous)/@9.672813,77.9632273,17z" target="_blank">
+            📍 View on Google Maps</a>`);
+      } else {
+        map.setView([lat, lon], 15);
+        marker.setLatLng([lat, lon]);
+      }
+    }
+
+    function showError(error) {
+      const output = document.getElementById("location");
+      switch (error.code) {
+        case error.PERMISSION_DENIED:
+          output.innerHTML = "User denied the request for Geolocation.";
+          break;
+        case error.POSITION_UNAVAILABLE:
+          output.innerHTML = "Location information is unavailable.";
+          break;
+        case error.TIMEOUT:
+          output.innerHTML = "The request to get user location timed out.";
+          break;
+        case error.UNKNOWN_ERROR:
+          output.innerHTML = "An unknown error occurred.";
+          break;
+      }
+    }
+  </script>
+
+</body>
+</html>
